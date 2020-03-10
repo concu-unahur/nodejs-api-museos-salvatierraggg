@@ -5,15 +5,26 @@ function imprimirMuseos(error, respuesta) {
     throw new Error('algo se rompió', error);
   }
 
+  //var contenido=new Array ();
   var contenido=[];
+  
   const cantidad = respuesta.body.count;
   const museos = respuesta.body.results;
 
-  for (i=0;i<cantidad;i++)
-   contenido.append(`${museos[i].nombre} ${museos[i].direccion}    Por cualquier consulta comunicarse al TELEFONO: ${museos[i].telefono} \n`);  
-
+  
   console.log(`Se encontraron ${cantidad} museos.`);
-  console.log(`El primer museo se llama ${museos[0]}.`)
+  console.log(`El primer museo se llama ${museos[0].nombre}.`)
+
+  for (const m of museos) {
+    contenido.push(`${m.nombre} ${m.direccion}    Por cualquier consulta comunicarse al TELEFONO: ${m.telefono} \n`)  
+  }
+  // for (let i=0;i<cantidad;i++){
+  //   console.log(`probando el ${i}`)
+  //   console.log(`terminado el ${i}`)
+  // };
+
+    console.log(contenido)
+  
 }
 
 
