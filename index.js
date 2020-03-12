@@ -1,13 +1,25 @@
 const superagent = require('superagent');
 
+const fs = require('fs');
+const original='https://www.cultura.gob.ar/api/v2.0/museos'
+const completo='https://www.cultura.gob.ar/api/v2.0/museos/?limit=29'
+
+
+function crearDatos(donde) {
+  superagent
+    .get(donde)
+    .query({ format: 'json' })
+    .end(imprimirMuseos)
+}
+
+
 function imprimirMuseos(error, respuesta) {
   if (error) {
     throw new Error('algo se rompió', error);
   }
-
-  //var contenido=new Array ();
-  var contenido=[];
-  
+  var i=0;
+  var contenidoLista=[];
+  var contenidoString="";
   const cantidad = respuesta.body.count;
   const museos = respuesta.body.results;
 
@@ -16,34 +28,25 @@ function imprimirMuseos(error, respuesta) {
   console.log(`El primer museo se llama ${museos[0].nombre}.`)
 
   for (const m of museos) {
-    contenido.push(`${m.nombre} ${m.direccion}    Por cualquier consulta comunicarse al TELEFONO: ${m.telefono} \n`)  
+    contenidoLista.push(`${i+1}° ${m.nombre} ${m.direccion}    Por cualquier consulta comunicarse al TELEFONO: ${m.telefono} \n`)  
+   contenidoString+=`${i+1}° ${m.nombre} ${m.direccion}    Por cualquier consulta comunicarse al TELEFONO: ${m.telefono} \n`
+    i++
   }
-  // for (let i=0;i<cantidad;i++){
-  //   console.log(`probando el ${i}`)
-  //   console.log(`terminado el ${i}`)
-  // };
+  i=0;
 
-    console.log(contenido)
-  
+    console.log("en una lista lista")
+    fs.writeFile('museosLista.txt', contenidoLista, verificar)
+    console.log("en un solo String")
+    fs.writeFile('museosString.txt', contenidoString, verificar)
 }
 
-
-function controlarErrores(error){
+function verificar(error) {
   if (error) {
-    throw new Error('salio error', error);
+    throw new Error('algo salio mal', error);
   }
-  console.log("todo bien")
+
+  console.log('todo bien')
 }
 
-
-
-
-console.log('Antes de llamar a superagent')
-
-superagent
-.get('https://www.cultura.gob.ar/api/v2.0/museos')
-.query({ format: 'json' })
-.end(imprimirMuseos)
-
-console.log('Después de llamar a superagent')
+crearDatos(completo)
 
