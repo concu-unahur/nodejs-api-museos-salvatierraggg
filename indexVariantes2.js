@@ -38,8 +38,7 @@ function imprimirMuseos(error, respuesta) {
     i++
   }
 
-  console.log("en una lista lista")
-  fs.writeFile(`museos.txt`, contenidoLista.join(""), ejecutar(LinkOrganismos,imprimirOrganismos))
+  fs.appendFile(`Museos_&_Organimsos.txt`, contenidoLista.join(""), verificar)
   
 
 i=0;
@@ -63,7 +62,7 @@ function imprimirOrganismos(error, respuesta) {
     i++
   }
 
-  fs.writeFile(`Organismos.txt`, contenidoLista.join(""), verificar)
+  fs.writeFile(`Museos_&_Organimsos.txt`, contenidoLista.join(""), ejecutar(LinkMuseos,imprimirMuseos))
   
   i=0;   
 }
@@ -87,6 +86,6 @@ function verificar(error) {
 
 /////////////////////////////////////////ejecutando///////////////////////
 
-ejecutar(LinkMuseos,imprimirMuseos)
+ejecutar(LinkOrganismos,imprimirOrganismos)
 
 
